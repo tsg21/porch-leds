@@ -10,10 +10,18 @@ parser.add_argument("--library", default="./simulation.so",
                     help="Path to the simulation.so library to load")
 parser.add_argument("--led-size", type=int, default=4,
                     help="Size of an LED in the simulation")
+parser.add_argument("pattern", nargs="?", default="Snowflakes2",
+                    help="Name of the pattern class to run")
 args = parser.parse_args()
 
 # Load the compiled C library
 target = ctypes.CDLL(args.library)
+
+target.setup.argtypes = [ctypes.c_char_p]
+target.setup.restype = ctypes.c_bool
+pattern_buffer = ctypes.create_string_buffer(args.pattern.encode())
+if not target.setup(pattern_buffer):
+    sys.exit(f"Unrecognised pattern '{args.pattern}'")
 
 # Constants
 LEDS_SIDE = 132

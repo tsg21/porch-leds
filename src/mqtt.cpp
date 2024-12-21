@@ -1,4 +1,5 @@
 #include "secrets.h"
+#include "common_led.h"
 #include <arduino.h>
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
@@ -15,7 +16,11 @@ const char * configuration_payload = R"END(
   "name": "Porch Lights Mode",
   "command_topic": "homeassistant/select/porch_lights_mode/set",
   "state_topic": "homeassistant/select/porch_lights_mode/state",
-  "options": ["Snowflakes2", "Rainbow", "Twinkles", "Wolfram135"],
+  "options": [)END"
+#define QUOTE_PATTERN(classname) "\"" #classname "\""
+ALL_PATTERNS(QUOTE_PATTERN, ", ")
+#undef QUOTE_PATTERN
+R"END(],
   "unique_id": "porch_lights_mode",
   "device": {
     "identifiers": ["porch_lights_001"],

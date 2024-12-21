@@ -54,3 +54,22 @@ class Wolfram135: public PatternRenderer {
       ~Wolfram135();
       void render(CRGB* leds) override;
 };
+
+/*
+ * List of all patterns, in the form of a parametric macro. Whenever
+ * you want to list all the known patterns in other parts of the code,
+ * you can invoke this with another macro name, and it will evaluate
+ * that macro with each pattern as an argument.
+ *
+ * The second parameter SEPARATOR will be interleaved between the
+ * invocations of the macro X.
+ */
+#define ALL_PATTERNS(X, SEPARATOR)                        \
+X(LedRace) SEPARATOR \
+X(TestPattern) SEPARATOR \
+X(Rainbow) SEPARATOR \
+X(Snowflakes1) SEPARATOR \
+X(Snowflakes2) SEPARATOR \
+X(TestPattern2) SEPARATOR \
+X(Twinkles) SEPARATOR \
+X(Wolfram135)
