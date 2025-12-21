@@ -36,6 +36,7 @@ PATTERN_INSTANCE(Snowflakes2)
 PATTERN_INSTANCE(TestPattern2)
 PATTERN_INSTANCE(Rainbow2)
 PATTERN_INSTANCE(Bounce)
+PATTERN_INSTANCE(Toby)
 COMPLEX_PATTERN_INSTANCE(Wolfram135)
 COMPLEX_PATTERN_INSTANCE(Twinkles)
 
@@ -60,4 +61,5 @@ COMPLEX_PATTERN_INSTANCE(Twinkles)
   SEPARATOR                               \
   X(TestPattern2) SEPARATOR X(Twinkles)   \
   SEPARATOR X(Rainbow2)                   \
-  SEPARATOR X(Wolfram135)
+  SEPARATOR X(Wolfram135)                 \
+  SEPARATOR X(Toby)
