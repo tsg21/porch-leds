@@ -37,7 +37,7 @@ struct Blob {
   }
 };
 
-void Creative::render(CRGB* leds) {
+void JumpingBlobs::render(CRGB* leds) {
   static std::vector<Blob> blobs;
   static unsigned long lastLaunch = 0;
   static unsigned long frameCount = 0;
