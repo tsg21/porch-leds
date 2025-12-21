@@ -55,6 +55,8 @@ void Creative::render(CRGB* leds) {
         // Map to right slope: position continues from 214
         float overshoot = blob.position - 213.0f;
         blob.position = 213.0f + overshoot;
+        // Flip velocity direction (right side counts down)
+        blob.velocity = -blob.velocity;
       }
     } else {
       // Right side: moving up means decreasing position (427->296->295->214)
@@ -66,6 +68,8 @@ void Creative::render(CRGB* leds) {
         // Map to left slope: position continues backwards from 213
         float overshoot = 214.0f - blob.position;
         blob.position = 214.0f - overshoot;
+        // Flip velocity direction (left side counts up)
+        blob.velocity = -blob.velocity;
       }
     }
 
