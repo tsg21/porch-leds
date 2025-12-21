@@ -12,12 +12,28 @@ struct Blob {
   float position;      // Current position (float for smooth movement)
   float velocity;      // LEDs per frame
   int side;           // 0 = left, 1 = right
+  CRGB color;         // Color for this blob's lifetime
+  CRGB halfBright;    // Half brightness version
+  CRGB quarterBright; // Quarter brightness version
 
   Blob(int startSide) : side(startSide), velocity(0) {
     // Start at bottom of chosen side
     position = (startSide == 0) ? 0.0f : 427.0f;
     // Random initial velocity: 3.0 to 7.0 LEDs per frame
     velocity = 3.0f + (rand() % 400) / 100.0f;
+    // Random color: red, green, white, yellow, or purple
+    int colorChoice = rand() % 5;
+    if (colorChoice == 0) color = CRGB::Red;
+    else if (colorChoice == 1) color = CRGB::Green;
+    else if (colorChoice == 2) color = CRGB::White;
+    else if (colorChoice == 3) color = CRGB::Yellow;
+    else color = CRGB(180, 0, 255);  // Bright purple
+
+    // Compute brightness variants once
+    halfBright = color;
+    halfBright.nscale8(128);
+    quarterBright = color;
+    quarterBright.nscale8(64);
   }
 };
 
@@ -73,12 +89,16 @@ void Creative::render(CRGB* leds) {
       }
     }
 
-    // Render blob (3 LEDs wide with fading)
+    // Render blob (7 LEDs wide with fading)
     int ledIndex = (int)blob.position;
     if (ledIndex >= 0 && ledIndex < NUM_LEDS) {
-      leds[ledIndex] = CRGB::Red;
-      if (ledIndex > 0) leds[ledIndex - 1] = CRGB(64, 0, 0);
-      if (ledIndex < NUM_LEDS - 1) leds[ledIndex + 1] = CRGB(64, 0, 0);
+      leds[ledIndex] = blob.color;
+      if (ledIndex > 0) leds[ledIndex - 1] = blob.color;
+      if (ledIndex < NUM_LEDS - 1) leds[ledIndex + 1] = blob.color;
+      if (ledIndex > 1) leds[ledIndex - 2] = blob.halfBright;
+      if (ledIndex < NUM_LEDS - 2) leds[ledIndex + 2] = blob.halfBright;
+      if (ledIndex > 2) leds[ledIndex - 3] = blob.quarterBright;
+      if (ledIndex < NUM_LEDS - 3) leds[ledIndex + 3] = blob.quarterBright;
     }
   }
 
