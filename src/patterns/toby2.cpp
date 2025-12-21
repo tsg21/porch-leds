@@ -24,11 +24,13 @@ struct Blob {
 void Toby2::render(CRGB* leds) {
   // Blobs flow outward from the center point (LED 213)
   // Spawn new blob every 50 frames, alternating red/green
+  // Every ~15th blob is a rainbow blob
 
   static Blob blobs[MAX_BLOBS];
   static int spawn_counter = 0;
   static bool next_is_red = true;
   static int counter = 0;
+  static int blob_count = 0;
 
   // Initialize blobs on first call
   static bool initialized = false;
@@ -50,33 +52,47 @@ void Toby2::render(CRGB* leds) {
     spawn_counter++;
     if (spawn_counter >= SPAWN_INTERVAL) {
       spawn_counter = 0;
+      blob_count++;
+
+      // Every 10th blob is a rainbow blob
+      bool spawn_rainbow = (blob_count % 10 == 0);
 
       // Find inactive blob slot and spawn two new blobs (one left, one right)
       for (int i = 0; i < MAX_BLOBS; i++) {
         if (!blobs[i].active) {
-          // Left-moving blob (starts one to the left, alternates red/green)
+          // Left-moving blob (starts one to the left)
           blobs[i].position = CENTER_POINT - 1;
           blobs[i].size = 0;
           blobs[i].age = 0;
-          blobs[i].color = next_is_red ? CRGB(255, 0, 0) : CRGB(0, 255, 0);
+          if (spawn_rainbow) {
+            blobs[i].color = CRGB::Purple;  // Placeholder - will be animated
+          } else {
+            blobs[i].color = next_is_red ? CRGB(255, 0, 0) : CRGB(0, 255, 0);
+          }
           blobs[i].active = true;
           blobs[i].moving_left = true;
 
-          // Find another slot for right-moving blob (alternates green/red)
+          // Find another slot for right-moving blob
           for (int j = i + 1; j < MAX_BLOBS; j++) {
             if (!blobs[j].active) {
               blobs[j].position = CENTER_POINT;
               blobs[j].size = 0;
               blobs[j].age = 0;
-              blobs[j].color = next_is_red ? CRGB(0, 255, 0) : CRGB(255, 0, 0);
+              if (spawn_rainbow) {
+                blobs[j].color = CRGB::Purple;  // Placeholder - will be animated
+              } else {
+                blobs[j].color = next_is_red ? CRGB(0, 255, 0) : CRGB(255, 0, 0);
+              }
               blobs[j].active = true;
               blobs[j].moving_left = false;
               break;
             }
           }
 
-          // Alternate color for next spawn
-          next_is_red = !next_is_red;
+          // Alternate color for next spawn (only if not rainbow)
+          if (!spawn_rainbow) {
+            next_is_red = !next_is_red;
+          }
           break;
         }
       }
@@ -116,6 +132,9 @@ void Toby2::render(CRGB* leds) {
   for (int i = 0; i < MAX_BLOBS; i++) {
     if (!blobs[i].active) continue;
 
+    // Check if this is a rainbow blob (using purple as marker)
+    bool is_rainbow = (blobs[i].color.r == 128 && blobs[i].color.g == 0 && blobs[i].color.b == 128);
+
     for (int j = 0; j < blobs[i].size; j++) {
       int led_index;
       if (blobs[i].moving_left) {
@@ -125,7 +144,13 @@ void Toby2::render(CRGB* leds) {
       }
 
       if (led_index >= 0 && led_index < NUM_LEDS) {
-        leds[led_index] = blobs[i].color;
+        if (is_rainbow) {
+          // Rainbow effect - each LED gets a different hue based on position
+          uint8_t hue = (j * 255 / BLOB_SIZE + blobs[i].age) % 256;
+          leds[led_index] = CHSV(hue, 255, 255);
+        } else {
+          leds[led_index] = blobs[i].color;
+        }
       }
     }
   }
