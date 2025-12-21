@@ -38,6 +38,7 @@ PATTERN_INSTANCE(Rainbow2)
 PATTERN_INSTANCE(Bounce)
 PATTERN_INSTANCE(Toby)
 PATTERN_INSTANCE(Toby2)
+PATTERN_INSTANCE(Creative)
 COMPLEX_PATTERN_INSTANCE(Wolfram135)
 COMPLEX_PATTERN_INSTANCE(Twinkles)
 
@@ -64,4 +65,5 @@ COMPLEX_PATTERN_INSTANCE(Twinkles)
   SEPARATOR X(Rainbow2)                   \
   SEPARATOR X(Wolfram135)                 \
   SEPARATOR X(Toby)                       \
-  SEPARATOR X(Toby2)
+  SEPARATOR X(Toby2)                      \
+  SEPARATOR X(Creative)

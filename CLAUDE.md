@@ -39,6 +39,7 @@ The pattern being simulated is controlled in `simulation/simulation.cpp`.
 ### Pattern System
 
 All patterns inherit from `PatternRenderer` (defined in `include/led_common.h`):
+
 - `render(CRGB* leds)` is called every 20ms (see `INTERVAL_MICROS` in `src/main.cpp`)
 - Pattern instances are created globally in `src/main.cpp` using the `ALL_PATTERNS` macro
 
@@ -63,6 +64,7 @@ All patterns inherit from `PatternRenderer` (defined in `include/led_common.h`):
 ### MQTT Integration
 
 The system (`src/mqtt.cpp`) automatically:
+
 - Connects to WiFi and MQTT broker (credentials in `include/secrets.h`)
 - Publishes Home Assistant discovery config on connect
 - Subscribes to pattern change commands
@@ -73,6 +75,7 @@ Pattern changes come via `homeassistant/select/porch_lights_mode/set` topic.
 ### Multi-Pattern System
 
 For patterns composed of multiple independent items (e.g., snowflakes):
+
 - Inherit from `MultiPatternItem` instead of `PatternRenderer`
 - Implement `update()`, `isDead()`, and `render(CRGB* leds)`
 - Use `MultiPatternRenderer` to manage the collection
@@ -83,3 +86,11 @@ For patterns composed of multiple independent items (e.g., snowflakes):
 - C++17 (`-std=gnu++2a` in platformio.ini)
 - FastLED 3.9.7 for LED control
 - Use `CRGB` type for color values
+
+## LED Layout
+
+The LEDs are arranged in an angular arch shape with vertical sides then a sloped top section.
+
+The numbering starts at zero on the bottom left. There are 428 in total.
+There are 132 LEDs on each vertical side, 82 LEDs on each slope
+Left side: 0-131, Left slope: 132-213, Right slope: 214-295, Right side: 296-427
