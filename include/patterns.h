@@ -41,6 +41,7 @@ PATTERN_INSTANCE(Toby2)
 PATTERN_INSTANCE(JumpingBlobs)
 COMPLEX_PATTERN_INSTANCE(Wolfram135)
 COMPLEX_PATTERN_INSTANCE(Twinkles)
+COMPLEX_PATTERN_INSTANCE(TobyTwinkles)
 
 #undef PATTERN_INSTANCE
 #undef COMPLEX_PATTERN_INSTANCE
@@ -66,4 +67,5 @@ COMPLEX_PATTERN_INSTANCE(Twinkles)
   SEPARATOR X(Wolfram135)                 \
   SEPARATOR X(Toby)                       \
   SEPARATOR X(Toby2)                      \
-  SEPARATOR X(JumpingBlobs)
+  SEPARATOR X(JumpingBlobs)               \
+  SEPARATOR X(TobyTwinkles)
